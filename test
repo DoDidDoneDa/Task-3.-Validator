@@ -1,0 +1,34 @@
+//наша функция булевского типа, которая принимает на вход строку скобок
+var Validator = (brackets: string): boolean => {
+    var stack: string[] = []
+//создаем запись, где ключам соответствуют закрывающие скобки, а значениями открывающие
+    const closeBrackets: Record<string, string> = {
+        ')': '(',
+        ']': '[',
+        '}': '{',
+    }
+//в цикле посимвольно перебираем нашу последовательнсть скобок, в массиве stack будем хранить открывающие скобки
+    for (let i = 0; i < brackets.length; i++) {
+        var ch = brackets[i]
+        var openBracket = closeBrackets[ch]
+//если первая скобка закрывающаяся, то наша последовательнсть уже не правильная
+        if (openBracket) {
+            if (stack.length == 0) {
+                return false
+            }
+
+            var lastOpenBracket = stack[stack.length - 1]
+//если крайняя скобка в стеке отлична от скобки в последовательности, то последовательнсть не правильная например ([{(}])
+            if (lastOpenBracket !== openBracket) {
+                return false
+            }
+            stack.pop()
+        } else {
+            stack.push(ch)
+        }
+    }
+
+    return stack.length == 0
+}
+
+console.log(Validator('(({[]}))'))
